@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BankApp - Online Banking</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="title-block">
+        <h1>Piggy Bank</h1>
+        <p class="subtitle">Login or create an account to get started</p>
+    </div>
+
+    <div class="forms-container">
+        <div id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername" placeholder="Username">
+
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Password">
+
+                <button type="submit">Login</button>
+                <p id="loginMessage"></p>
+            </form>
+        </div>
+
+        <div id="register-section">
+            <h2>Register</h2>
+            <form id="register-form">
+                <label for="registerUsername">Username</label>
+                <input type="text" id="registerUsername" placeholder="Username">
+
+                <label for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" placeholder="Password">
+
+                <button type="submit">Register</button>
+                <p id="registerMessage"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

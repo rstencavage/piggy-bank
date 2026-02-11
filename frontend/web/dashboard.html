@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Piggy Bank</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1>Welcome Back, <span id="username">User</span>!</h1>
+        <p>Manage your account below</p>
+    </div>
+
+    <!-- Balance Display -->
+    <div class="balance-card">
+        <h2>Current Balance</h2>
+        <div class="balance-amount"><span id="balanceDisplay">0.00</span></div>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="actions-grid">
+        <div class="action-card">
+            <h3>Deposit</h3>
+            <p>Deposit money into your account</p>
+            <form id="deposit-form">
+                <label for="depositAmount">Amount</label>
+                <input type="number" id="depositAmount" placeholder="Amount" step="0.01">
+                <button type="submit">Make Deposit</button>
+                <p id="depositMessage"></p>
+            </form>
+        </div>
+
+        <div class="action-card">
+            <h3>Withdraw</h3>
+            <p>Withdraw money from your account</p>
+            <form id="withdraw-form">
+                <label for="withdrawAmount">Amount</label>
+                <input type="number" id="withdrawAmount" placeholder="Amount" step="0.01">
+                <button type="submit">Make Withdrawal</button>
+                <p id="withdrawMessage"></p>
+            </form>
+        </div>
+
+        <div class="action-card">
+            <h3>Transfer</h3>
+            <p>Send money to another account</p>
+            <form id="transfer-form">
+                <label for="transferTo">Username</label>
+                <input type="text" id="transferTo" placeholder="Recipient Username" >
+                <label for="transferAmount">Amount</label>
+                <input type="number" id="transferAmount" placeholder="Amount" step="0.01">
+                <button type="submit">Transfer Funds</button>
+                <p id="transferMessage"></p>
+            </form>
+        </div>
+
+        <div class="action-card">
+            <h3>History</h3>
+            <p>Recent transactions</p>
+            <div id="recentHistory">
+                <p id="historyPreviewMessage">Loading...</p>
+            </div>
+            <button onclick="window.location.href='history.html'">View Full History</button>
+        </div>
+    </div>
+
+    <!-- Logout -->
+    <div class="logout-section">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
