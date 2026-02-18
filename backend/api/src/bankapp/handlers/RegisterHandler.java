@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Handles a REGISTER (username password) request.
@@ -42,8 +43,8 @@ public class RegisterHandler {
             return new RegisterResult(false, "Password must be at least 4 characters.");
         }
 
-        String checkSQL = "SELECT CUS_PASSWD FROM CUSTOMER WHERE CUS_UNAME = ?";
-        String insertSQL = "INSERT INTO CUSTOMER (CUS_UNAME, CUS_PASSWD, CUS_BALANCE) VALUES (?, ?, 0.0)";
+        String checkSQL = "SELECT CUS_PASSWD_HASH FROM CUSTOMER WHERE CUS_UNAME = ?";
+        String insertSQL = "INSERT INTO CUSTOMER (CUS_UNAME, CUS_PASSWD_HASH, CUS_BALANCE) VALUES (?, ?, 0.0)";
 
         try {
             // Check if username already exists
@@ -59,7 +60,10 @@ public class RegisterHandler {
             // Insert the new customer record
             try (PreparedStatement insert = conn.prepareStatement(insertSQL)) {
                 insert.setString(1, username);
-                insert.setString(2, password);
+
+                // Hash the password using bcrypt to prevent plaintext passwords from being stored in the database.
+                String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
+                insert.setString(2, hash);
                 insert.executeUpdate();
             }
 
