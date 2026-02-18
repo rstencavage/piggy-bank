@@ -1,5 +1,7 @@
 package bankapp;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,12 +12,11 @@ import java.sql.SQLException;
  * @author Ryan Stencavage
  */
 public class Database {
-    // Local MySQL URL
-    private static final String URL = "jdbc:mysql://localhost:3306/bankdb";
+    private static final Dotenv dotenv = Dotenv.load();
 
-    // MySQL login info
-    private static final String USER = "root";
-    private static final String PASSWORD = "RyanSql05$";
+    private static final String URL = dotenv.get("DB_URL");
+    private static final String USER = dotenv.get("DB_USER");
+    private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
     /**
      * Opens and returns a new connection to the database. It is called by the handlers when they need to run SQL.
