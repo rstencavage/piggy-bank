@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Handles a LOGIN (username password) request.
@@ -24,7 +25,7 @@ public class LoginHandler {
      */
     public static LoginResult authenticate(Connection conn, String username, String password) {
 
-        String sql = "SELECT CUS_PASSWD FROM CUSTOMER WHERE CUS_UNAME = ?";
+        String sql = "SELECT CUS_PASSWD_HASH FROM CUSTOMER WHERE CUS_UNAME = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -37,9 +38,10 @@ public class LoginHandler {
             }
 
             // compare given password with the stored one
-            String storedPass = rs.getString("CUS_PASSWD");
+            String storedPass = rs.getString("CUS_PASSWD_HASH");
 
-            if (storedPass.equals(password)) {
+            // Compare input password to stored bcrypt hash
+            if (storedPass != null && BCrypt.checkpw(password, storedPass)) {
                 return new LoginResult(true, "Login successful.");
             } else {
                 return new LoginResult(false, "Invalid username or password.");
