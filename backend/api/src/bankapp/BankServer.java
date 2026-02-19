@@ -85,32 +85,37 @@ public class BankServer {
         });
 
         post("/deposit", (req, res) -> {
+            String username = Auth.requireUsername(req);
+
             DepositRequest data = gson.fromJson(req.body(), DepositRequest.class);
 
             Connection conn = Database.getConnection();
-            ActionResult result = DepositHandler.deposit(conn, data.username, data.amount);
+            ActionResult result = DepositHandler.deposit(conn, username, data.amount);
 
             res.type("application/json");
             return gson.toJson(result);
         });
 
         post("/withdraw", (req, res) -> {
+            String username = Auth.requireUsername(req);
+
             WithdrawRequest data = gson.fromJson(req.body(), WithdrawRequest.class);
 
             Connection conn = Database.getConnection();
-            ActionResult result = WithdrawHandler.withdraw(conn, data.username, data.amount);
+            ActionResult result = WithdrawHandler.withdraw(conn, username, data.amount);
 
             res.type("application/json");
             return gson.toJson(result);
         });
 
         post("/transfer", (req, res) -> {
-            // Convert JSON body → TransferRequest object
+            String fromUser = Auth.requireUsername(req);
+
             TransferRequest data = gson.fromJson(req.body(), TransferRequest.class);
 
             Connection conn = Database.getConnection();
 
-            ActionResult result = TransferHandler.transfer(conn, data.fromUser, data.toUser, data.amount);
+            ActionResult result = TransferHandler.transfer(conn, fromUser, data.toUser, data.amount);
 
             res.type("application/json");
             return gson.toJson(result);
