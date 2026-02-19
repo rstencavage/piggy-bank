@@ -13,6 +13,7 @@ server-side to ensure correctness and consistency.
 
 ## Key Features
 - Secure user authentication using **salted bcrypt password hashing**
+- **JWT-based session management** — every protected endpoint requires a valid signed token
 - Deposit and withdrawal operations  
 - Peer-to-peer account transfers  
 - Atomic server-side transaction handling  
@@ -21,6 +22,8 @@ server-side to ensure correctness and consistency.
 
 ## Security
 - Passwords are hashed using bcrypt before being stored (no plaintext password storage)
+- All financial endpoints (`/balance`, `/deposit`, `/withdraw`, `/transfer`, `/history`) are protected by JWT — unauthenticated requests receive HTTP 401
+- JWT tokens are signed with a secret loaded from the environment (`JWT_SECRET`) and expire after a configurable lifetime (`JWT_TTL_MINUTES`, default 60 min)
 - Prepared statements are used to mitigate SQL injection risks
 - Database transactions ensure atomic and consistent financial operations
 

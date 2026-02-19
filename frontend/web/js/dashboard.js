@@ -1,6 +1,7 @@
 const username = localStorage.getItem("username");
+const token = localStorage.getItem("token");
 
-if (!username) {
+if (!username || !token) {
     window.location.href = "index.html";
 }
 
@@ -22,7 +23,9 @@ function updateBalance(el, newText) {
 }
 
 function getBalance() {
-    fetch(`http://localhost:5230/balance?username=${username}`)
+    fetch(`http://localhost:5230/balance`, {
+        headers: {'Authorization': `Bearer ${token}`}
+    })
         .then(response => response.json())
         .then(data => {
             const balanceDisplay = document.getElementById('balanceDisplay');
@@ -53,8 +56,8 @@ function deposit(event) {
 
     fetch('http://localhost:5230/deposit', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, amount: parseFloat(amount)})
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify({amount: parseFloat(amount)})
     })
         .then(response => response.json())
         .then(data => {
@@ -82,8 +85,8 @@ function withdraw(event) {
 
     fetch('http://localhost:5230/withdraw', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, amount: parseFloat(amount)})
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify({amount: parseFloat(amount)})
     })
         .then(response => response.json())
         .then(data => {
@@ -111,8 +114,8 @@ function transfer(event) {
 
     fetch('http://localhost:5230/transfer', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({fromUser: username, toUser: toUser, amount: parseFloat(amount)})
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify({toUser: toUser, amount: parseFloat(amount)})
     })
         .then(response => response.json())
         .then(data => {
@@ -134,7 +137,9 @@ function transfer(event) {
 }
 
 function recentHistory() {
-    fetch(`http://localhost:5230/history?username=${username}`)
+    fetch(`http://localhost:5230/history`, {
+        headers: {'Authorization': `Bearer ${token}`}
+    })
         .then(response => response.json())
         .then(data => {
             const historyDiv = document.getElementById('recentHistory');
@@ -184,5 +189,6 @@ function recentHistory() {
 
 function logout() {
     localStorage.removeItem("username");
+    localStorage.removeItem("token");
     window.location.href = "index.html";
 }

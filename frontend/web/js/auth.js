@@ -30,6 +30,7 @@ function login(event) {
 
             if(data.success){
                 localStorage.setItem("username", username);
+                localStorage.setItem("token", data.token);
                 window.location.href = "dashboard.html";
             }
         })
