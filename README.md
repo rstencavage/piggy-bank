@@ -5,7 +5,54 @@ core backend engineering concepts such as **atomic transactions,
 data consistency, secure authentication, and RESTful API design**, paired with a modern,  
 responsive frontend.
 
-## Overview
+## How to Run
+
+### Prerequisites
+- Java 11+
+- MySQL 8.0+
+
+### 1. Set up the database
+```sql
+mysql -u root -p < db/schema.sql
+```
+
+### 2. Configure environment variables
+Copy `.env.example` to a new file called `.env` and fill in your values:
+```
+cp .env.example .env
+```
+Open `.env` and set your MySQL credentials and a strong random JWT secret:
+```
+DB_URL=jdbc:mysql://localhost:3306/bankdb
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+JWT_SECRET=replace_with_a_long_random_secret
+JWT_TTL_MINUTES=60
+```
+
+### 3. Compile the backend
+From the `backend/api` directory:
+```bash
+javac -cp "lib/*" -d out \
+    src/bankapp/*.java \
+    src/bankapp/dto/*.java \
+    src/bankapp/handlers/*.java \
+    src/bankapp/security/*.java
+```
+*(Windows: replace `:` with `;` in classpath separators)*
+
+### 4. Start the backend
+```bash
+java -cp "out:lib/*" bankapp.BankServer
+```
+The API will be available at `http://localhost:5230`.
+
+### 5. Open the frontend
+Open `frontend/web/index.html` in your browser.
+
+---
+
+
 The application supports common banking operations including  
 account management, deposits, withdrawals, peer-to-peer transfers,  
 and transaction history tracking. All monetary operations are handled  

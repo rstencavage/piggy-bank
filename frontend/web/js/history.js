@@ -1,7 +1,6 @@
 const username = localStorage.getItem("username");
-const token = localStorage.getItem("token");
 
-if (!username || !token) {
+if (!username || !localStorage.getItem("token")) {
     window.location.href = "index.html";
 }
 
@@ -10,11 +9,9 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadHistory() {
-    fetch(`http://localhost:5230/history`, {
-        headers: {'Authorization': `Bearer ${token}`}
-    })
-        .then(response => response.json())
+    authFetch('/history')
         .then(data => {
+            if (!data) return;
             const historyContent = document.getElementById('historyContent');
 
             if (!data.success || !data.transactions || data.transactions.length === 0) {
@@ -28,7 +25,8 @@ function loadHistory() {
             // Newest first
             const transactions = data.transactions.slice().reverse();
 
-            transactions.forEach(tx => {const isIncoming = tx.type === "DEPOSIT" || tx.type === "TRANSFER_IN";
+            transactions.forEach(tx => {
+                const isIncoming = tx.type === "DEPOSIT" || tx.type === "TRANSFER_IN";
 
                 const amountText =
                     (isIncoming ? "+" : "-") +

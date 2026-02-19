@@ -1,7 +1,6 @@
 const username = localStorage.getItem("username");
-const token = localStorage.getItem("token");
 
-if (!username || !token) {
+if (!username || !localStorage.getItem("token")) {
     window.location.href = "index.html";
 }
 
@@ -23,11 +22,9 @@ function updateBalance(el, newText) {
 }
 
 function getBalance() {
-    fetch(`http://localhost:5230/balance`, {
-        headers: {'Authorization': `Bearer ${token}`}
-    })
-        .then(response => response.json())
+    authFetch('/balance')
         .then(data => {
+            if (!data) return;
             const balanceDisplay = document.getElementById('balanceDisplay');
 
             if (!data.success) {
@@ -54,13 +51,13 @@ function deposit(event) {
 
     const amount = document.getElementById('depositAmount').value;
 
-    fetch('http://localhost:5230/deposit', {
+    authFetch('/deposit', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({amount: parseFloat(amount)})
     })
-        .then(response => response.json())
         .then(data => {
+            if (!data) return;
             const message = document.getElementById('depositMessage');
             message.textContent = data.message;
             clearAfter("depositMessage", 4000);
@@ -83,13 +80,13 @@ function withdraw(event) {
 
     const amount = document.getElementById('withdrawAmount').value;
 
-    fetch('http://localhost:5230/withdraw', {
+    authFetch('/withdraw', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({amount: parseFloat(amount)})
     })
-        .then(response => response.json())
         .then(data => {
+            if (!data) return;
             const message = document.getElementById('withdrawMessage');
             message.textContent = data.message;
             clearAfter("withdrawMessage", 4000);
@@ -112,13 +109,13 @@ function transfer(event) {
     const toUser = document.getElementById('transferTo').value;
     const amount = document.getElementById('transferAmount').value;
 
-    fetch('http://localhost:5230/transfer', {
+    authFetch('/transfer', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({toUser: toUser, amount: parseFloat(amount)})
     })
-        .then(response => response.json())
         .then(data => {
+            if (!data) return;
             const message = document.getElementById('transferMessage');
             message.textContent = data.message;
             clearAfter("transferMessage", 4000);
@@ -137,11 +134,9 @@ function transfer(event) {
 }
 
 function recentHistory() {
-    fetch(`http://localhost:5230/history`, {
-        headers: {'Authorization': `Bearer ${token}`}
-    })
-        .then(response => response.json())
+    authFetch('/history')
         .then(data => {
+            if (!data) return;
             const historyDiv = document.getElementById('recentHistory');
 
             if (!data.success || !data.transactions || data.transactions.length === 0) {

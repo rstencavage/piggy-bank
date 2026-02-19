@@ -8,7 +8,6 @@ import bankapp.security.Auth;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -46,64 +45,67 @@ public class BankServer {
             // Parse JSON request body into a LoginRequest object
             LoginRequest data = gson.fromJson(req.body(), LoginRequest.class);
 
-            Connection conn = Database.getConnection();
+            try (Connection conn = Database.getConnection()) {
+                // Perform authentication
+                LoginResult result = LoginHandler.authenticate(conn, data.username, data.password);
 
-            // Perform authentication
-            LoginResult result = LoginHandler.authenticate(conn, data.username, data.password);
+                // If login successful, create token and attach it
+                if (result.success) {
+                    result.token = JwtUtil.createToken(data.username);
+                }
 
-            // If login successful, create token and attach it
-            if (result.success) {
-                result.token = JwtUtil.createToken(data.username);
+                // Return JSON result
+                res.type("application/json");
+                return gson.toJson(result);
             }
-
-            // Return JSON result
-            res.type("application/json");
-            return gson.toJson(result);
         });
 
         post("/register", (req, res) -> {
 
             RegisterRequest data = gson.fromJson(req.body(), RegisterRequest.class);
 
-            Connection conn = Database.getConnection();
+            try (Connection conn = Database.getConnection()) {
+                RegisterResult result = RegisterHandler.register(conn, data.username, data.password);
 
-            RegisterResult result = RegisterHandler.register(conn, data.username, data.password);
-
-            res.type("application/json");
-            return gson.toJson(result);
+                res.type("application/json");
+                return gson.toJson(result);
+            }
         });
 
         // Account operations
         get("/balance", (req, res) -> {
             String username = Auth.requireUsername(req);
 
-            Connection conn = Database.getConnection();
-            BalanceResult result = BalanceHandler.getBalance(conn, username);
+            try (Connection conn = Database.getConnection()) {
+                BalanceResult result = BalanceHandler.getBalance(conn, username);
 
-            res.type("application/json");
-            return gson.toJson(result);
+                res.type("application/json");
+                return gson.toJson(result);
+            }
         });
 
         post("/deposit", (req, res) -> {
             String username = Auth.requireUsername(req);
             DepositRequest data = gson.fromJson(req.body(), DepositRequest.class);
 
-            Connection conn = Database.getConnection();
-            ActionResult result = DepositHandler.deposit(conn, username, data.amount);
+            try (Connection conn = Database.getConnection()) {
+                ActionResult result = DepositHandler.deposit(conn, username, data.amount);
 
-            res.type("application/json");
-            return gson.toJson(result);
+                res.type("application/json");
+                return gson.toJson(result);
+            }
         });
 
         post("/withdraw", (req, res) -> {
             String username = Auth.requireUsername(req);
             WithdrawRequest data = gson.fromJson(req.body(), WithdrawRequest.class);
 
-            Connection conn = Database.getConnection();
-            ActionResult result = WithdrawHandler.withdraw(conn, username, data.amount);
+            try (Connection conn = Database.getConnection()) {
+                ActionResult result = WithdrawHandler.withdraw(conn, username, data.amount);
 
-            res.type("application/json");
-            return gson.toJson(result);
+                res.type("application/json");
+                return gson.toJson(result);
+            }
         });
 
         post("/transfer", (req, res) -> {
@@ -113,24 +115,24 @@ public class BankServer {
             // Convert JSON body → TransferRequest object
             TransferRequest data = gson.fromJson(req.body(), TransferRequest.class);
 
-            Connection conn = Database.getConnection();
+            try (Connection conn = Database.getConnection()) {
+                ActionResult result = TransferHandler.transfer(conn, fromUser, data.toUser, data.amount);
 
-            ActionResult result = TransferHandler.transfer(conn, fromUser, data.toUser, data.amount);
-
-            res.type("application/json");
-            return gson.toJson(result);
+                res.type("application/json");
+                return gson.toJson(result);
+            }
         });
 
         // Transaction history
         get("/history", (req, res) -> {
             String username = Auth.requireUsername(req);
 
-            Connection conn = Database.getConnection();
+            try (Connection conn = Database.getConnection()) {
+                HistoryResult result = HistoryHandler.history(conn, username);
 
-            HistoryResult result = HistoryHandler.history(conn, username);
-            
-            res.type("application/json");
-            return gson.toJson(result);
+                res.type("application/json");
+                return gson.toJson(result);
+            }
         });
     }
 

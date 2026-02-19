@@ -16,7 +16,7 @@ function login(event) {
     const password = document.getElementById('loginPassword').value;
 
     // POST request from backend
-    fetch('http://localhost:5230/login', {
+    fetch(`${API_BASE}/login`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: username, password: password})
@@ -53,7 +53,7 @@ function register(event) {
     const password = document.getElementById('registerPassword').value;
 
     // POST request from backend
-    fetch('http://localhost:5230/register', {
+    fetch(`${API_BASE}/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
