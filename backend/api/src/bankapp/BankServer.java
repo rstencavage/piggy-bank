@@ -3,10 +3,13 @@ package bankapp;
 import bankapp.dto.*;
 import bankapp.handlers.*;
 import bankapp.security.JwtUtil;
+import bankapp.security.UnauthorizedException;
+import bankapp.security.Auth;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import static spark.Spark.*;
 
@@ -25,6 +28,12 @@ public class BankServer {
 
         port(5230);                 // HTTP server port
         enableCORS("*", "*", "*");  // Cross-origin request settings
+
+        exception(UnauthorizedException.class, (e, req, res) -> {
+            res.status(401);
+            res.type("application/json");
+            res.body(gson.toJson(Map.of("error", e.getMessage())));
+        });
 
         System.out.println("HTTP BankServer running on http://localhost:5230");
 
@@ -66,13 +75,7 @@ public class BankServer {
 
         // Account operations
         get("/balance", (req, res) -> {
-            // TEMP: username from query string until tokens are implemented
-            String username = req.queryParams("username");
-
-            if (username == null || username.isBlank()) {
-                res.type("application/json");
-                return gson.toJson(new BalanceResult(false, "Missing username.", 0.00));
-            }
+            String username = Auth.requireUsername(req);
 
             Connection conn = Database.getConnection();
             BalanceResult result = BalanceHandler.getBalance(conn, username);
@@ -115,13 +118,7 @@ public class BankServer {
 
         // Transaction history
         get("/history", (req, res) -> {
-            String username = req.queryParams("username");
-
-            // must have a username to look up history
-            if (username == null || username.isBlank()) {
-                res.type("application/json");
-                return gson.toJson(new HistoryResult(false, "Missing username.", List.of()));
-            }
+            String username = Auth.requireUsername(req);
 
             Connection conn = Database.getConnection();
 
