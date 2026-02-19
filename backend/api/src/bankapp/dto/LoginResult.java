@@ -6,6 +6,7 @@ package bankapp.dto;
 public class LoginResult {
     public boolean success;
     public String message;
+    public String token;
 
     public LoginResult(boolean success, String message) {
         this.success = success;

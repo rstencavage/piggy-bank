@@ -2,6 +2,7 @@ package bankapp;
 
 import bankapp.dto.*;
 import bankapp.handlers.*;
+import bankapp.security.JwtUtil;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
@@ -36,11 +37,15 @@ public class BankServer {
             // Parse JSON request body into a LoginRequest object
             LoginRequest data = gson.fromJson(req.body(), LoginRequest.class);
 
-            // Acquire DB connection
             Connection conn = Database.getConnection();
 
             // Perform authentication
             LoginResult result = LoginHandler.authenticate(conn, data.username, data.password);
+
+            // If login successful, create token and attach it
+            if (result.success) {
+                result.token = JwtUtil.createToken(data.username);
+            }
 
             // Return JSON result
             res.type("application/json");

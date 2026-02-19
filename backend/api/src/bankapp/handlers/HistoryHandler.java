@@ -23,12 +23,13 @@ public class HistoryHandler {
      *
      * @param conn     active database connection
      * @param username username whose history is requested
-     * @return ActionResult containing success flag and history text
+     * @return HistoryResult containing success flag and history text
      */
     public static HistoryResult history(Connection conn, String username) {
 
         // Original history SQL from your BankTask version
-        String txnRecordSQL = "SELECT TXN_ID, CUS_ID_SOURCE, CUS_ID_DEST, TXN_AMOUNT, TXN_DATETIME FROM " + "TRANSACTION_RECORD " + "WHERE CUS_ID_SOURCE = ? OR CUS_ID_DEST = ? ORDER BY TXN_ID";
+        String txnRecordSQL = "SELECT TXN_ID, CUS_ID_SOURCE, CUS_ID_DEST, TXN_AMOUNT, TXN_DATETIME FROM " +
+                "TRANSACTION_RECORD " + "WHERE CUS_ID_SOURCE = ? OR CUS_ID_DEST = ? ORDER BY TXN_ID";
 
         // Ensures the username exists
         String checkUser = "SELECT 1 FROM CUSTOMER WHERE CUS_UNAME = ?";
