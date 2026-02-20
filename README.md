@@ -5,6 +5,26 @@ core backend engineering concepts such as **atomic transactions,
 data consistency, secure authentication, and RESTful API design**, paired with a modern,  
 responsive frontend.
 
+## Demo
+
+### Login page
+![Login](docs/images/login.png)
+
+### New account with initial balance of $0.00
+![Dashboard](docs/images/dashboard-before.png)
+
+### Deposit submission
+![Deposit](docs/images/deposit-form.png)
+
+### Updated balance after deposit (persistent backend state)
+![Dashboard](docs/images/dashboard-after.png)
+
+### Transaction history stored and retrieved from database
+![History](docs/images/history.png)
+
+### Server-side validation prevents invalid transfers (insufficient funds)
+![Error Handling](docs/images/insufficient-funds.png)
+
 ## Overview
 The application supports common banking operations including  
 account management, deposits, withdrawals, peer-to-peer transfers,  
