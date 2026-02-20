@@ -8,22 +8,22 @@ responsive frontend.
 ## Demo
 
 ### Login page
-![Login](docs/images/login.png)
+<img src="docs/images/login.png" width="700">
 
 ### New account with initial balance of $0.00
-![Dashboard](docs/images/dashboard-before.png)
+<img src="docs/images/dashboard-zero.png" width="700">
 
 ### Deposit submission
-![Deposit](docs/images/deposit-form.png)
+<img src="docs/images/deposit.png" width="700">
 
 ### Updated balance after deposit (persistent backend state)
-![Dashboard](docs/images/dashboard-after.png)
+<img src="docs/images/dashboard-after.png" width="700">
 
 ### Transaction history stored and retrieved from database
-![History](docs/images/history.png)
+<img src="docs/images/history.png" width="700">
 
 ### Server-side validation prevents invalid transfers (insufficient funds)
-![Error Handling](docs/images/insufficient-funds.png)
+<img src="docs/images/insufficient-funds.png" width="700">
 
 ## Overview
 The application supports common banking operations including  
