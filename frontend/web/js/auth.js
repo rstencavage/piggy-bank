@@ -29,6 +29,7 @@ function login(event) {
             clearAfter("loginMessage", 4000);
 
             if(data.success){
+                localStorage.setItem("token", data.token);
                 localStorage.setItem("username", username);
                 window.location.href = "dashboard.html";
             }

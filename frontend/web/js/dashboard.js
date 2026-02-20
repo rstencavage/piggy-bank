@@ -1,8 +1,8 @@
-const username = localStorage.getItem("username");
+const token = localStorage.getItem("token");
 
-if (!username) {
-    window.location.href = "index.html";
-}
+if (!token) window.location.href = "index.html";
+
+const username = localStorage.getItem("username");
 
 window.addEventListener('DOMContentLoaded', function () {
     document.getElementById('username').textContent = username;
@@ -22,7 +22,11 @@ function updateBalance(el, newText) {
 }
 
 function getBalance() {
-    fetch(`http://localhost:5230/balance?username=${username}`)
+    fetch("http://localhost:5230/balance", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
         .then(response => response.json())
         .then(data => {
             const balanceDisplay = document.getElementById('balanceDisplay');
@@ -51,10 +55,15 @@ function deposit(event) {
 
     const amount = document.getElementById('depositAmount').value;
 
-    fetch('http://localhost:5230/deposit', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, amount: parseFloat(amount)})
+    fetch("http://localhost:5230/deposit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            amount: amount
+        })
     })
         .then(response => response.json())
         .then(data => {
@@ -63,8 +72,8 @@ function deposit(event) {
             clearAfter("depositMessage", 4000);
 
             if (data.success) {
-                getBalance(); // This should refresh the balance
-                document.getElementById('depositAmount').value = ''; // Clear input
+                getBalance();
+                document.getElementById('depositAmount').value = '';
             }
         })
         .catch(error => {
@@ -80,10 +89,15 @@ function withdraw(event) {
 
     const amount = document.getElementById('withdrawAmount').value;
 
-    fetch('http://localhost:5230/withdraw', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, amount: parseFloat(amount)})
+    fetch("http://localhost:5230/withdraw", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            amount: amount
+        })
     })
         .then(response => response.json())
         .then(data => {
@@ -109,10 +123,16 @@ function transfer(event) {
     const toUser = document.getElementById('transferTo').value;
     const amount = document.getElementById('transferAmount').value;
 
-    fetch('http://localhost:5230/transfer', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({fromUser: username, toUser: toUser, amount: parseFloat(amount)})
+    fetch("http://localhost:5230/transfer", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            toUser: toUser,
+            amount: amount
+        })
     })
         .then(response => response.json())
         .then(data => {
@@ -134,7 +154,11 @@ function transfer(event) {
 }
 
 function recentHistory() {
-    fetch(`http://localhost:5230/history?username=${username}`)
+    fetch("http://localhost:5230/history", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
         .then(response => response.json())
         .then(data => {
             const historyDiv = document.getElementById('recentHistory');

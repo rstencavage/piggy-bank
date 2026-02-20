@@ -1,15 +1,19 @@
-const username = localStorage.getItem("username");
+const token = localStorage.getItem("token");
 
-if (!username) {
-    window.location.href = "index.html";
-}
+if (!token) window.location.href = "index.html";
+
+const username = localStorage.getItem("username");
 
 window.addEventListener('DOMContentLoaded', function () {
     loadHistory();
 });
 
 function loadHistory() {
-    fetch(`http://localhost:5230/history?username=${username}`)
+    fetch("http://localhost:5230/history", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
         .then(response => response.json())
         .then(data => {
             const historyContent = document.getElementById('historyContent');
