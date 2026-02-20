@@ -83,7 +83,7 @@ Create a `.env` file in `backend/api/` with the following variables:
 ```
 DB_URL=jdbc:mysql://localhost:3306/bankdb
 DB_USER=your_db_user
-DB_PASS=your_db_password
+DB_PASSWORD=your_db_password
 
 JWT_SECRET=your_jwt_secret
 JWT_TTL_MINUTES=60
