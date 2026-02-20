@@ -16,7 +16,7 @@ function login(event) {
     const password = document.getElementById('loginPassword').value;
 
     // POST request from backend
-    fetch('http://localhost:5230/login', {
+    fetch(API_BASE + '/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: username, password: password})
@@ -30,6 +30,7 @@ function login(event) {
 
             if(data.success){
                 localStorage.setItem("username", username);
+                localStorage.setItem("token", data.token);
                 window.location.href = "dashboard.html";
             }
         })
@@ -52,7 +53,7 @@ function register(event) {
     const password = document.getElementById('registerPassword').value;
 
     // POST request from backend
-    fetch('http://localhost:5230/register', {
+    fetch(API_BASE + '/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

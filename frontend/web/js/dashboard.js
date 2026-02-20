@@ -1,6 +1,6 @@
 const username = localStorage.getItem("username");
 
-if (!username) {
+if (!username || !localStorage.getItem("token")) {
     window.location.href = "index.html";
 }
 
@@ -22,7 +22,7 @@ function updateBalance(el, newText) {
 }
 
 function getBalance() {
-    fetch(`http://localhost:5230/balance?username=${username}`)
+    authFetch('/balance')
         .then(response => response.json())
         .then(data => {
             const balanceDisplay = document.getElementById('balanceDisplay');
@@ -51,10 +51,9 @@ function deposit(event) {
 
     const amount = document.getElementById('depositAmount').value;
 
-    fetch('http://localhost:5230/deposit', {
+    authFetch('/deposit', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, amount: parseFloat(amount)})
+        body: JSON.stringify({amount: parseFloat(amount)})
     })
         .then(response => response.json())
         .then(data => {
@@ -80,10 +79,9 @@ function withdraw(event) {
 
     const amount = document.getElementById('withdrawAmount').value;
 
-    fetch('http://localhost:5230/withdraw', {
+    authFetch('/withdraw', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, amount: parseFloat(amount)})
+        body: JSON.stringify({amount: parseFloat(amount)})
     })
         .then(response => response.json())
         .then(data => {
@@ -109,10 +107,9 @@ function transfer(event) {
     const toUser = document.getElementById('transferTo').value;
     const amount = document.getElementById('transferAmount').value;
 
-    fetch('http://localhost:5230/transfer', {
+    authFetch('/transfer', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({fromUser: username, toUser: toUser, amount: parseFloat(amount)})
+        body: JSON.stringify({toUser: toUser, amount: parseFloat(amount)})
     })
         .then(response => response.json())
         .then(data => {
@@ -134,7 +131,7 @@ function transfer(event) {
 }
 
 function recentHistory() {
-    fetch(`http://localhost:5230/history?username=${username}`)
+    authFetch('/history')
         .then(response => response.json())
         .then(data => {
             const historyDiv = document.getElementById('recentHistory');
@@ -184,5 +181,6 @@ function recentHistory() {
 
 function logout() {
     localStorage.removeItem("username");
+    localStorage.removeItem("token");
     window.location.href = "index.html";
 }
