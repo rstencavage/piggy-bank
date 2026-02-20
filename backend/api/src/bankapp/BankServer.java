@@ -28,10 +28,19 @@ public class BankServer {
         port(5230);                 // HTTP server port
         enableCORS("*", "*", "*");  // Cross-origin request settings
 
+        // Handles authentication failures (invalid or missing JWT)
         exception(UnauthorizedException.class, (e, req, res) -> {
             res.status(401);
             res.type("application/json");
             res.body(gson.toJson(Map.of("error", e.getMessage())));
+        });
+
+        // Handles unexpected server errors
+        exception(Exception.class, (e, req, res) -> {
+            res.status(500);
+            res.type("application/json");
+            res.body(gson.toJson(Map.of("error", "Internal server error")));
+            e.printStackTrace();
         });
 
         System.out.println("HTTP BankServer running on http://localhost:5230");
