@@ -11,10 +11,10 @@ responsive frontend.
 <img src="docs/images/login.png" width="700">
 
 ### New account with initial balance of $0.00
-<img src="docs/images/dashboard-zero.png" width="700">
+<img src="docs/images/dashboard-before.png" width="700">
 
 ### Deposit submission
-<img src="docs/images/deposit.png" width="700">
+<img src="docs/images/deposit-form.png" width="700">
 
 ### Updated balance after deposit (persistent backend state)
 <img src="docs/images/dashboard-after.png" width="700">
