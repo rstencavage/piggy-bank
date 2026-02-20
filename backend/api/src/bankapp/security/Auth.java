@@ -35,6 +35,10 @@ public class Auth {
         }
 
         // Verify token and return associated username
-        return JwtUtil.verifyAndGetUsername(token);
+        try {
+            return JwtUtil.verifyAndGetUsername(token);
+        } catch (JwtUtil.JwtAuthException e) {
+            throw new UnauthorizedException(e.getMessage());
+        }
     }
 }
