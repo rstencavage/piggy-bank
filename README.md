@@ -22,7 +22,7 @@ responsive frontend.
 ### Transaction history stored and retrieved from database
 <img src="docs/images/history.png" width="700">
 
-### Server-side validation prevents invalid transfers (insufficient funds)
+### Server enforces transactional constraints and safely rejects invalid requests
 <img src="docs/images/insufficient-funds.png" width="700">
 
 ## Overview
