@@ -66,7 +66,8 @@ Tokens are signed using a server-side secret and include an expiration time to l
 - Java  
 - Spark Java (REST API)  
 - MySQL  
-- JDBC  
+- JDBC
+- Maven (build and dependency management)
 
 ### Frontend
 - HTML  
@@ -82,6 +83,32 @@ Tokens are signed using a server-side secret and include an expiration time to l
 - `backend/` – Java REST API and business logic  
 - `frontend/` – client-side UI  
 - `db/` – database schema and related scripts 
+
+## Building and Running
+
+### Prerequisites
+- Java 17+
+- Maven 3.6+
+- MySQL (for running the server)
+
+### Build
+```bash
+cd backend/api
+mvn package
+```
+This produces a fat JAR at `target/piggy-bank-api-1.0-SNAPSHOT.jar`.
+
+### Run
+```bash
+java -jar target/piggy-bank-api-1.0-SNAPSHOT.jar
+```
+
+### Tests
+```bash
+cd backend/api
+mvn test
+```
+Unit tests use an H2 in-memory database and require no external services.
 
 ## API Endpoints
 
