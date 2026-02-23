@@ -22,7 +22,7 @@ function updateBalance(el, newText) {
 }
 
 function getBalance() {
-    fetch("http://localhost:5230/balance", {
+    fetch(API_BASE_URL + "/balance", {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -55,7 +55,7 @@ function deposit(event) {
 
     const amount = document.getElementById('depositAmount').value;
 
-    fetch("http://localhost:5230/deposit", {
+    fetch(API_BASE_URL + "/deposit", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -89,7 +89,7 @@ function withdraw(event) {
 
     const amount = document.getElementById('withdrawAmount').value;
 
-    fetch("http://localhost:5230/withdraw", {
+    fetch(API_BASE_URL + "/withdraw", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -123,7 +123,7 @@ function transfer(event) {
     const toUser = document.getElementById('transferTo').value;
     const amount = document.getElementById('transferAmount').value;
 
-    fetch("http://localhost:5230/transfer", {
+    fetch(API_BASE_URL + "/transfer", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -154,7 +154,7 @@ function transfer(event) {
 }
 
 function recentHistory() {
-    fetch("http://localhost:5230/history", {
+    fetch(API_BASE_URL + "/history", {
         headers: {
             "Authorization": `Bearer ${token}`
         }
