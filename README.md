@@ -67,6 +67,7 @@ Tokens are signed using a server-side secret and include an expiration time to l
 - Spark Java (REST API)  
 - MySQL  
 - JDBC  
+- Maven (dependency management and build system)
 
 ### Frontend
 - HTML  
@@ -111,6 +112,25 @@ JWT_TTL_MINUTES=60
 
 The `.env` file is not committed to version control and must be created locally.
 See `.env.example` for a template.
+
+## Building and Running
+
+### Prerequisites
+- Java 17+
+- Maven 3.6+
+- MySQL (for running the server)
+
+### Build
+```bash
+cd backend/api
+mvn clean package
+```
+This produces a fat JAR at `target/piggy-bank-api-1.0-SNAPSHOT.jar`.
+
+### Run
+```bash
+java -jar target/piggy-bank-api-1.0-SNAPSHOT.jar
+```
 
 ## Focus
 This project emphasizes **correctness, security, and transactional integrity**,  
