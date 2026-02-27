@@ -17,7 +17,7 @@ public class DepositHandler {
      *
      * @param conn   active database connection
      * @param username the username to deposit to
-     * @param amount amount to withdraw
+     * @param amount amount to deposit
      */
     public static ActionResult deposit(Connection conn, String username, double amount) {
 
