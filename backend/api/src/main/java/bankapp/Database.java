@@ -12,7 +12,8 @@ import java.sql.SQLException;
  * @author Ryan Stencavage
  */
 public class Database {
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure().filename(System.getProperty("dotenv.filename", ".env"))
+            .load();
 
     private static final String URL = dotenv.get("DB_URL");
     private static final String USER = dotenv.get("DB_USER");
